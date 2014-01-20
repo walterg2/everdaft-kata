@@ -4,19 +4,40 @@ import everdaft.entities.Combatant;
 
 public class BasicAttack implements Attack {
 
+	private Combatant attacker;
+	private Combatant defender;
+	private AttackStatus status;
+
 	public BasicAttack(Combatant attacker, Combatant defender) {
-		// TODO Auto-generated constructor stub
+		this.attacker = attacker;
+		this.defender = defender;
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-
+	public Combatant getAttacker() {
+		return attacker;
 	}
-
-	@Override
+	
+	public void setAttacker(Combatant attacker) {
+		this.attacker = attacker;
+	}
+	
+	public Combatant getDefender() {
+		return defender;
+	}
+	
+	public void setDefender(Combatant defender) {
+		this.defender = defender;
+	}
+	
 	public AttackStatus getStatus() {
-		return AttackStatus.HIT;
+		return status;
+	}
+
+	public void setStatus(AttackStatus status) {
+		this.status = status;
+	}
+
+	public void execute(int roll) {
 	}
 
 }

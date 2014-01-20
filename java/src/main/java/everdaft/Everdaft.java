@@ -22,7 +22,7 @@ public class Everdaft {
 		Combatant attacker = new PlayerCharacter();
 		Combatant defender = new NonPlayerCharacter();
 		Attack attack = new BasicAttack(attacker, defender);
-		attack.execute();
+		attack.execute(10);
 		System.out.format("Attack was a %s", attack.getStatus());
 	}
 

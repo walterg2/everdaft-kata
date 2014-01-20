@@ -2,7 +2,7 @@ package everdaft.combat;
 
 public interface Attack {
 
-	void execute();
+	void execute(int roll);
 
 	AttackStatus getStatus();
 
