@@ -6,7 +6,7 @@ public interface Attack {
 
 	void execute(int roll);
 
-	AttackStatus getStatus();
+	AttackOutcome getStatus();
 	Combatant getAttacker();
 	Combatant getDefender();
 

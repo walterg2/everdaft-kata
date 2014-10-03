@@ -18,5 +18,4 @@ public enum Ability {
 		return desc;
 	}
 
-
 }

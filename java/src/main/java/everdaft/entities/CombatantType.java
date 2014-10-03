@@ -1,12 +1,12 @@
-package everdaft.combat;
+package everdaft.entities;
 
-public enum AttackStatus {
+public enum CombatantType {
 
-	HIT("Hit"), MISS("Miss"), CRITICAL("Critical Hit");
-
+	PC("Player Character"), NPC("Non-player Character"), MONSTER("Monster");
+	
 	private final String desc;
 
-	AttackStatus(final String desc) {
+	CombatantType(final String desc) {
 		this.desc = desc;
 	}
 

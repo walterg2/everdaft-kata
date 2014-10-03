@@ -6,7 +6,7 @@ public class BasicAttack implements Attack {
 
 	private Combatant attacker;
 	private Combatant defender;
-	private AttackStatus status;
+	private AttackOutcome status;
 
 	public BasicAttack(Combatant attacker, Combatant defender) {
 		this.attacker = attacker;
@@ -29,11 +29,11 @@ public class BasicAttack implements Attack {
 		this.defender = defender;
 	}
 
-	public AttackStatus getStatus() {
+	public AttackOutcome getStatus() {
 		return status;
 	}
 
-	public void setStatus(AttackStatus status) {
+	public void setStatus(AttackOutcome status) {
 		this.status = status;
 	}
 
@@ -45,7 +45,7 @@ public class BasicAttack implements Attack {
 			// do more damage on a critical hit
 			if (roll == 20) {
 				
-				this.status = AttackStatus.CRITICAL;
+				this.status = AttackOutcome.CRITICAL;
 				if (2 + attacker.getDamageModifier() * 2 > 0) {
 					defender.damage(2 + attacker.getDamageModifier() * 2);
 				} else {
@@ -54,7 +54,7 @@ public class BasicAttack implements Attack {
 
 			} else {
 
-				this.status = AttackStatus.HIT;
+				this.status = AttackOutcome.HIT;
 				if (1 + attacker.getDamageModifier() > 0) {
 					defender.damage(1 + attacker.getDamageModifier());
 				} else {
@@ -63,7 +63,7 @@ public class BasicAttack implements Attack {
 			}
 
 		} else {
-			this.status = AttackStatus.MISS;
+			this.status = AttackOutcome.MISS;
 		}
 
 	}
