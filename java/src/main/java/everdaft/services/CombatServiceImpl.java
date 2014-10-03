@@ -1,6 +1,6 @@
 package everdaft.services;
 
-import everdaft.abilities.Ability;
+import everdaft.entities.AbilityType;
 import everdaft.entities.AttackOutcomeType;
 import everdaft.entities.Monster;
 import everdaft.entities.NonPlayerCharacter;
@@ -27,10 +27,10 @@ public class CombatServiceImpl implements CombatService {
             int attackModifier = 0;
             if (request.getAttacker() instanceof PlayerCharacter) {
                 PlayerCharacter character = (PlayerCharacter) request.getAttacker();
-                attackModifier = calculateAbilityModifier(Ability.STR, character.getStrength());
+                attackModifier = calculateAbilityModifier(AbilityType.STR, character.getStrength());
             } else if (request.getAttacker() instanceof NonPlayerCharacter) {
                 NonPlayerCharacter character = (NonPlayerCharacter) request.getAttacker();
-                attackModifier = calculateAbilityModifier(Ability.STR, character.getStrength());
+                attackModifier = calculateAbilityModifier(AbilityType.STR, character.getStrength());
             } else {
                 Monster monster = (Monster) request.getAttacker();
                 attackModifier = monster.getDamageModifier();
@@ -40,10 +40,10 @@ public class CombatServiceImpl implements CombatService {
             int armorClassModifier = 0;
             if (request.getDefender() instanceof PlayerCharacter) {
                 PlayerCharacter character = (PlayerCharacter) request.getDefender();
-                armorClass = calculateAbilityModifier(Ability.DEX, character.getDexterity());
+                armorClass = calculateAbilityModifier(AbilityType.DEX, character.getDexterity());
             } else if (request.getDefender() instanceof NonPlayerCharacter) {
                 NonPlayerCharacter character = (NonPlayerCharacter) request.getDefender();
-                armorClass = calculateAbilityModifier(Ability.DEX, character.getDexterity());
+                armorClass = calculateAbilityModifier(AbilityType.DEX, character.getDexterity());
             } else {
                 Monster monster = (Monster) request.getAttacker();
                 armorClass = monster.getArmorClass();
@@ -53,10 +53,10 @@ public class CombatServiceImpl implements CombatService {
             int damageModifier = 0;
             if (request.getDefender() instanceof PlayerCharacter) {
                 PlayerCharacter character = (PlayerCharacter) request.getDefender();
-                damageModifier = calculateAbilityModifier(Ability.STR, character.getStrength());
+                damageModifier = calculateAbilityModifier(AbilityType.STR, character.getStrength());
             } else if (request.getDefender() instanceof NonPlayerCharacter) {
                 NonPlayerCharacter character = (NonPlayerCharacter) request.getDefender();
-                damageModifier = calculateAbilityModifier(Ability.DEX, character.getStrength());
+                damageModifier = calculateAbilityModifier(AbilityType.DEX, character.getStrength());
             } else {
                 Monster monster = (Monster) request.getAttacker();
                 damageModifier = monster.getDamageModifier();
@@ -100,7 +100,7 @@ public class CombatServiceImpl implements CombatService {
         return response;
     }
 
-    private int calculateAbilityModifier(Ability abilityType, int abilityScore) throws AbilityScoreOutOfRangeException {
+    private int calculateAbilityModifier(AbilityType abilityType, int abilityScore) throws AbilityScoreOutOfRangeException {
         int mod;
         switch (abilityScore) {
             case 1:

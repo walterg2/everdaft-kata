@@ -1,12 +1,12 @@
 package everdaft.exceptions;
 
-import everdaft.abilities.Ability;
+import everdaft.entities.AbilityType;
 
 public class AbilityScoreOutOfRangeException extends AbilityException {
 
 	private int score;
 	
-	public AbilityScoreOutOfRangeException(Ability ability, int score) {
+	public AbilityScoreOutOfRangeException(AbilityType ability, int score) {
 		super(ability);
 		setScore(score);
 	}

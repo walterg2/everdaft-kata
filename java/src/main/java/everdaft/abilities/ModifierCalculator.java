@@ -1,10 +1,11 @@
 package everdaft.abilities;
 
+import everdaft.entities.AbilityType;
 import everdaft.exceptions.AbilityScoreOutOfRangeException;
 
 public class ModifierCalculator {
 
-	public int calculate(Ability ability, int score) throws AbilityScoreOutOfRangeException {
+	public int calculate(AbilityType ability, int score) throws AbilityScoreOutOfRangeException {
 		int mod;
 		switch (score) {
 			case 1:

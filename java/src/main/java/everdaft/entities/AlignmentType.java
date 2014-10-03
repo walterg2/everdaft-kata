@@ -1,11 +1,11 @@
-package everdaft.alignments;
+package everdaft.entities;
 
-public enum Alignment {
+public enum AlignmentType {
 	GOOD("Good"), NEUTRAL("Neutral"), EVIL("Evil");
 	
 	private final String desc;
 
-	Alignment(final String desc) {
+	AlignmentType(final String desc) {
 		this.desc = desc;
 	}
 

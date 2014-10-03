@@ -2,9 +2,7 @@ package everdaft.entities;
 
 import java.util.HashMap;
 
-import everdaft.abilities.Ability;
 import everdaft.abilities.ModifierCalculator;
-import everdaft.alignments.Alignment;
 import everdaft.exceptions.AbilityException;
 import everdaft.exceptions.AbilityNotFoundException;
 import everdaft.exceptions.AbilityScoreOutOfRangeException;
@@ -12,26 +10,26 @@ import everdaft.exceptions.AbilityScoreOutOfRangeException;
 public abstract class Character implements Combatant {
 
     private String name;
-    private Alignment alignment;
+    private AlignmentType alignment;
     private int armorClass;
     private int hitPoints;
     private int currentHitPoints;
 
-    private HashMap<Ability, ScoreAndModifier> abilities = new HashMap<Ability, ScoreAndModifier>();
+    private HashMap<AbilityType, ScoreAndModifier> abilities = new HashMap<AbilityType, ScoreAndModifier>();
 
     public Character() {
 
         // setup initial ability scores
-        abilities.put(Ability.STR, new ScoreAndModifier(10, 0));
-        abilities.put(Ability.DEX, new ScoreAndModifier(10, 0));
-        abilities.put(Ability.CON, new ScoreAndModifier(10, 0));
-        abilities.put(Ability.INT, new ScoreAndModifier(10, 0));
-        abilities.put(Ability.WIS, new ScoreAndModifier(10, 0));
-        abilities.put(Ability.CHA, new ScoreAndModifier(10, 0));
+        abilities.put(AbilityType.STR, new ScoreAndModifier(10, 0));
+        abilities.put(AbilityType.DEX, new ScoreAndModifier(10, 0));
+        abilities.put(AbilityType.CON, new ScoreAndModifier(10, 0));
+        abilities.put(AbilityType.INT, new ScoreAndModifier(10, 0));
+        abilities.put(AbilityType.WIS, new ScoreAndModifier(10, 0));
+        abilities.put(AbilityType.CHA, new ScoreAndModifier(10, 0));
 
         // default name and alignment
         name = "Bob";
-        alignment = Alignment.NEUTRAL;
+        alignment = AlignmentType.NEUTRAL;
 
         // armor class and hit points
         armorClass = 10;
@@ -47,11 +45,11 @@ public abstract class Character implements Combatant {
         this.name = name;
     }
 
-    public Alignment getAlignment() {
+    public AlignmentType getAlignment() {
         return alignment;
     }
 
-    public void setAlignment(Alignment alignment) {
+    public void setAlignment(AlignmentType alignment) {
         this.alignment = alignment;
     }
 
@@ -64,18 +62,18 @@ public abstract class Character implements Combatant {
     }
 
     public int getStrength() {
-        return getAbilityModifier(Ability.STR);
+        return getAbilityModifier(AbilityType.STR);
     }
 
     public int getDexterity() {
-        return getAbilityModifier(Ability.DEX);
+        return getAbilityModifier(AbilityType.DEX);
     }
 
-    public HashMap<Ability, ScoreAndModifier> getAbilities() {
+    public HashMap<AbilityType, ScoreAndModifier> getAbilities() {
         return abilities;
     }
 
-    public void setAbilities(HashMap<Ability, ScoreAndModifier> abilities) {
+    public void setAbilities(HashMap<AbilityType, ScoreAndModifier> abilities) {
         this.abilities = abilities;
     }
 
@@ -99,7 +97,7 @@ public abstract class Character implements Combatant {
         return currentHitPoints > 0;
     }
 
-    public void setAbilityScore(Ability ability, int score) throws AbilityException {
+    public void setAbilityScore(AbilityType ability, int score) throws AbilityException {
 
         ScoreAndModifier scoreAndMod = this.abilities.get(ability);
 
@@ -113,21 +111,21 @@ public abstract class Character implements Combatant {
             scoreAndMod.setModifier(modifier);
 
             // apply changes to CON
-            if (ability == Ability.CON) {
+            if (ability == AbilityType.CON) {
                 int damage = hitPoints - currentHitPoints;
                 hitPoints = 5 + modifier;
                 currentHitPoints = hitPoints - damage;
             }
 
             // apply changes to DEX
-            if (ability == Ability.DEX) {
+            if (ability == AbilityType.DEX) {
                 armorClass = 10 + modifier;
             }
 
         }
     }
 
-    public int getAbilityModifier(Ability ability) {
+    public int getAbilityModifier(AbilityType ability) {
         ScoreAndModifier scoreAndMod = this.abilities.get(ability);
         if (scoreAndMod == null) {
             throw new IllegalArgumentException();
@@ -135,7 +133,7 @@ public abstract class Character implements Combatant {
         return scoreAndMod.getModifier();
     }
 
-    private int calculateModifier(Ability ability, int score) throws AbilityScoreOutOfRangeException {
+    private int calculateModifier(AbilityType ability, int score) throws AbilityScoreOutOfRangeException {
         ModifierCalculator calc = new ModifierCalculator();
         return calc.calculate(ability, score);
     }
