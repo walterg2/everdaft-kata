@@ -30,6 +30,7 @@ public class Everdaft {
         CombatRequest request = new CombatRequest();
         request.setAttacker(attacker);
         request.setDefender(defender);
+        request.setRoll(15);
 
         CombatService combatService = CombatServiceFactory.createCombatService();
         CombatResponse response = combatService.attack(request);

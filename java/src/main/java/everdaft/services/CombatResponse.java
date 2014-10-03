@@ -1,13 +1,13 @@
 package everdaft.services;
 
-import everdaft.combat.AttackOutcome;
+import everdaft.entities.AttackOutcomeType;
 import everdaft.entities.Combatant;
 
 public class CombatResponse {
 
     private Combatant attacker;
     private Combatant defender;
-    private AttackOutcome outcome;
+    private AttackOutcomeType outcome;
 
     public Combatant getAttacker() {
         return attacker;
@@ -25,11 +25,11 @@ public class CombatResponse {
         this.defender = defender;
     }
 
-    public AttackOutcome getOutcome() {
+    public AttackOutcomeType getOutcome() {
         return outcome;
     }
 
-    public void setOutcome(AttackOutcome outcome) {
+    public void setOutcome(AttackOutcomeType outcome) {
         this.outcome = outcome;
     }
 
