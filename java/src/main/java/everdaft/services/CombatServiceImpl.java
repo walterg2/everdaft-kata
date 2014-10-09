@@ -94,6 +94,34 @@ public class CombatServiceImpl implements CombatService {
             response.setOutcome(AttackOutcomeType.MISS);
         }
         
+        int previousLevel = request.getAttacker().getLevel();
+        request.getAttacker().setLevel((int) request.getAttacker().getExperiencePoints() / 1000 + 1);
+        int newLevel = request.getAttacker().getLevel();
+        
+        if (previousLevel != newLevel) {
+        	
+        	int currentHitPoints = request.getAttacker().getHitPoints();
+        	
+        	int previousMaxHitPoints = 0;
+        	try {
+				previousMaxHitPoints = (5 + calculateAbilityModifier(AbilityType.STR, request.getAttacker().getConstitution())) * previousLevel;
+            } catch (AbilityScoreOutOfRangeException ex) {
+                throw new CombatServiceException(ex);
+            }
+        	
+        	int newMaxHitPoints = 0;
+        	try {
+        		newMaxHitPoints = (5 + calculateAbilityModifier(AbilityType.STR, request.getAttacker().getConstitution())) * newLevel;
+            } catch (AbilityScoreOutOfRangeException ex) {
+                throw new CombatServiceException(ex);
+            }
+        	
+        	int currentDamage = previousMaxHitPoints - currentHitPoints;
+        	
+        	request.getAttacker().setHitPoints(newMaxHitPoints - currentDamage);
+        	
+        }
+        
         return response;
     }
 
@@ -107,7 +135,7 @@ public class CombatServiceImpl implements CombatService {
         // calculate max hit points
         int maxHitPoints = 0;
         try {
-			maxHitPoints = 5 + calculateAbilityModifier(AbilityType.STR, request.getRecipient().getConstitution());			
+			maxHitPoints = (5 + calculateAbilityModifier(AbilityType.STR, request.getRecipient().getConstitution())) * request.getRecipient().getLevel();
 		} catch (AbilityScoreOutOfRangeException ex) {
             throw new CombatServiceException(ex);
 		}

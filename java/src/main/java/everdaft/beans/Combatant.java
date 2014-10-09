@@ -17,6 +17,7 @@ public class Combatant {
     private boolean dead = false;
     
     private long experiencePoints = 0;
+    private int level = 1;
 
 	public String getName() {
         return name;
@@ -112,6 +113,14 @@ public class Combatant {
 
 	public void setExperiencePoints(long experiencePoints) {
 		this.experiencePoints = experiencePoints;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 }
