@@ -1,4 +1,4 @@
-package everdaft.entities;
+package everdaft.beans;
 
 public class ScoreAndModifier {
 

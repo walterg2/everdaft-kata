@@ -1,6 +1,6 @@
 package everdaft.exceptions;
 
-import everdaft.entities.AbilityType;
+import everdaft.beans.AbilityType;
 
 public class AbilityException extends EverdaftException {
 

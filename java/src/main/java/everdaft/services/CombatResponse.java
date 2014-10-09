@@ -1,7 +1,7 @@
 package everdaft.services;
 
-import everdaft.entities.AttackOutcomeType;
-import everdaft.entities.Combatant;
+import everdaft.beans.AttackOutcomeType;
+import everdaft.beans.Combatant;
 
 public class CombatResponse {
 

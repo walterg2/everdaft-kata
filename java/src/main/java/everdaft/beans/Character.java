@@ -1,4 +1,4 @@
-package everdaft.entities;
+package everdaft.beans;
 
 import java.util.HashMap;
 
@@ -11,7 +11,6 @@ public abstract class Character implements Combatant {
 
     private String name;
     private AlignmentType alignment;
-    private int armorClass;
     private int hitPoints;
     private int currentHitPoints;
 
@@ -31,8 +30,6 @@ public abstract class Character implements Combatant {
         name = "Bob";
         alignment = AlignmentType.NEUTRAL;
 
-        // armor class and hit points
-        armorClass = 10;
         hitPoints = 5;
         currentHitPoints = 5;
     }
@@ -115,11 +112,6 @@ public abstract class Character implements Combatant {
                 int damage = hitPoints - currentHitPoints;
                 hitPoints = 5 + modifier;
                 currentHitPoints = hitPoints - damage;
-            }
-
-            // apply changes to DEX
-            if (ability == AbilityType.DEX) {
-                armorClass = 10 + modifier;
             }
 
         }

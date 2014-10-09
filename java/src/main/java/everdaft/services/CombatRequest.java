@@ -1,6 +1,6 @@
 package everdaft.services;
 
-import everdaft.entities.Combatant;
+import everdaft.beans.Combatant;
 
 public class CombatRequest {
 

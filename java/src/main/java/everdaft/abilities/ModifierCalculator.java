@@ -1,6 +1,6 @@
 package everdaft.abilities;
 
-import everdaft.entities.AbilityType;
+import everdaft.beans.AbilityType;
 import everdaft.exceptions.AbilityScoreOutOfRangeException;
 
 public class ModifierCalculator {

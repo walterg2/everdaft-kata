@@ -1,11 +1,12 @@
-package everdaft.entities;
+package everdaft.beans;
 
-public enum AlignmentType {
-	GOOD("Good"), NEUTRAL("Neutral"), EVIL("Evil");
+public enum CombatantType {
+
+	PC("Player Character"), NPC("Non-player Character"), MONSTER("Monster");
 	
 	private final String desc;
 
-	AlignmentType(final String desc) {
+	CombatantType(final String desc) {
 		this.desc = desc;
 	}
 

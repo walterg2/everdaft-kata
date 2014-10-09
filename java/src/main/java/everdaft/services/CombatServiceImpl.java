@@ -1,16 +1,17 @@
 package everdaft.services;
 
-import everdaft.entities.AbilityType;
-import everdaft.entities.AttackOutcomeType;
-import everdaft.entities.Monster;
-import everdaft.entities.NonPlayerCharacter;
-import everdaft.entities.PlayerCharacter;
+import everdaft.beans.AbilityType;
+import everdaft.beans.AttackOutcomeType;
+import everdaft.beans.Monster;
+import everdaft.beans.NonPlayerCharacter;
+import everdaft.beans.PlayerCharacter;
 import everdaft.exceptions.AbilityScoreOutOfRangeException;
+import everdaft.exceptions.CombatServiceException;
 
 public class CombatServiceImpl implements CombatService {
 
     @Override
-    public CombatResponse attack(CombatRequest request) {
+    public CombatResponse attack(CombatRequest request) throws CombatServiceException {
         CombatResponse response = new CombatResponse();
 
         response.setAttacker(request.getAttacker());
@@ -80,8 +81,8 @@ public class CombatServiceImpl implements CombatService {
             // calculate armor class
             armorClass = 10 + armorClassModifier;
 
-        } catch (AbilityScoreOutOfRangeException e) {
-            // should never happen
+        } catch (AbilityScoreOutOfRangeException ex) {
+            throw new CombatServiceException(ex);
         }
 
         // determine hit or miss and apply damage

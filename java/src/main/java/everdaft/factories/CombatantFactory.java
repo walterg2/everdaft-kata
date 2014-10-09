@@ -1,10 +1,10 @@
 package everdaft.factories;
 
-import everdaft.entities.CombatantType;
-import everdaft.entities.Combatant;
-import everdaft.entities.Monster;
-import everdaft.entities.NonPlayerCharacter;
-import everdaft.entities.PlayerCharacter;
+import everdaft.beans.Combatant;
+import everdaft.beans.CombatantType;
+import everdaft.beans.Monster;
+import everdaft.beans.NonPlayerCharacter;
+import everdaft.beans.PlayerCharacter;
 import everdaft.exceptions.EverdaftException;
 
 public class CombatantFactory {

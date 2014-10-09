@@ -1,4 +1,4 @@
-package everdaft.entities;
+package everdaft.beans;
 
 public enum AbilityType {
 	STR("Strength"), DEX("Dexterity"), CON("Constitution"), INT("Intelligence"), WIS("Wisdom"), CHA("Charisma");
