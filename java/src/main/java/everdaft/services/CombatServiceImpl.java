@@ -23,38 +23,47 @@ public class CombatServiceImpl implements CombatService {
         int standardDamage = 0;
         int criticalDamage = 0;
 
+        // calculate attack modifier
+        int attackModifier = 0;
         try {
-
-            // calculate attack modifier
-            int attackModifier = calculateAbilityModifier(AbilityType.STR, request.getAttacker().getStrength());
-
-            // calculate armor class modifier
-            int armorClassModifier = calculateAbilityModifier(AbilityType.DEX, request.getDefender().getDexterity());
-
-            // calculate damage modifier
-            int damageModifier = calculateAbilityModifier(AbilityType.STR, request.getDefender().getStrength());
-
-            // calculate standard damage
-            standardDamage = 1 + damageModifier;
-            if (standardDamage < 1) {
-                standardDamage = 1;
-            }
-
-            // calculate critical damage
-            criticalDamage = 2 + damageModifier * 2;
-            if (criticalDamage < 1) {
-                criticalDamage = 1;
-            }
-
-            // calculate roll
-            roll = request.getRoll() + attackModifier;
-
-            // calculate armor class
-            armorClass = 10 + armorClassModifier;
-
+            attackModifier = calculateAbilityModifier(AbilityType.STR, request.getAttacker().getStrength());
         } catch (AbilityScoreOutOfRangeException ex) {
             throw new CombatServiceException(ex);
         }
+
+        // calculate armor class modifier
+        int armorClassModifier = 0;
+		try {
+			armorClassModifier = calculateAbilityModifier(AbilityType.DEX, request.getDefender().getDexterity());
+        } catch (AbilityScoreOutOfRangeException ex) {
+            throw new CombatServiceException(ex);
+        }
+
+        // calculate damage modifier
+        int damageModifier = 0;
+		try {
+			damageModifier = calculateAbilityModifier(AbilityType.STR, request.getDefender().getStrength());
+        } catch (AbilityScoreOutOfRangeException ex) {
+            throw new CombatServiceException(ex);
+        }
+
+        // calculate standard damage
+        standardDamage = 1 + damageModifier;
+        if (standardDamage < 1) {
+            standardDamage = 1;
+        }
+
+        // calculate critical damage
+        criticalDamage = 2 + damageModifier * 2;
+        if (criticalDamage < 1) {
+            criticalDamage = 1;
+        }
+
+        // calculate roll
+        roll = request.getRoll() + attackModifier;
+
+        // calculate armor class
+        armorClass = 10 + armorClassModifier;
 
         // determine hit or miss and apply damage
         if (roll >= armorClass) {
@@ -68,6 +77,7 @@ public class CombatServiceImpl implements CombatService {
                 	request.getDefender().setDead(true);                	
                 }
                 request.getDefender().setHitPoints(request.getDefender().getHitPoints() - criticalDamage);
+                request.getAttacker().setExperiencePoints(request.getAttacker().getExperiencePoints() + 20);
             } else {
                 response.setOutcome(AttackOutcomeType.HIT);
                 if (request.getDefender().getHitPoints() > criticalDamage) {
@@ -78,6 +88,7 @@ public class CombatServiceImpl implements CombatService {
                 	request.getDefender().setDead(false);                	
                 }
                 request.getDefender().setHitPoints(request.getDefender().getHitPoints() - standardDamage);
+                request.getAttacker().setExperiencePoints(request.getAttacker().getExperiencePoints() + 10);
             }
         } else {
             response.setOutcome(AttackOutcomeType.MISS);
@@ -93,12 +104,23 @@ public class CombatServiceImpl implements CombatService {
         response.setHealer(request.getHealer());
         response.setRecipient(request.getRecipient());
         
+        // calculate max hit points
+        int maxHitPoints = 0;
+        try {
+			maxHitPoints = 5 + calculateAbilityModifier(AbilityType.STR, request.getRecipient().getConstitution());			
+		} catch (AbilityScoreOutOfRangeException ex) {
+            throw new CombatServiceException(ex);
+		}
+        if (maxHitPoints < 1) {
+        	maxHitPoints = 1;
+        }
+        
         int originalHitPoints = request.getRecipient().getHitPoints();
         int newHitPoints = request.getPointsToHeal() + request.getRecipient().getHitPoints();
-        if (newHitPoints > 5) {
-            request.getRecipient().setHitPoints(5);
-            response.setNewHitPoints(5);
-            response.setActualPointsHealed(5 - originalHitPoints);
+        if (newHitPoints > maxHitPoints) {
+            request.getRecipient().setHitPoints(maxHitPoints);
+            response.setNewHitPoints(maxHitPoints);
+            response.setActualPointsHealed(maxHitPoints - originalHitPoints);
         } else {
             request.getRecipient().setHitPoints(newHitPoints);        	
             response.setNewHitPoints(newHitPoints);

@@ -15,6 +15,8 @@ public class Combatant {
     
     private boolean alive = true;
     private boolean dead = false;
+    
+    private long experiencePoints = 0;
 
 	public String getName() {
         return name;
@@ -102,6 +104,14 @@ public class Combatant {
 
 	public void setDead(boolean dead) {
 		this.dead = dead;
+	}
+
+	public long getExperiencePoints() {
+		return experiencePoints;
+	}
+
+	public void setExperiencePoints(long experiencePoints) {
+		this.experiencePoints = experiencePoints;
 	}
 
 }
