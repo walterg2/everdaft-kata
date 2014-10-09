@@ -1,13 +1,12 @@
-package everdaft.services;
+package everdaft.services.requests;
 
-import everdaft.beans.AttackOutcomeType;
 import everdaft.beans.Combatant;
 
-public class CombatResponse {
+public class AttackRequest {
 
     private Combatant attacker;
     private Combatant defender;
-    private AttackOutcomeType outcome;
+    private int roll;
 
     public Combatant getAttacker() {
         return attacker;
@@ -25,12 +24,12 @@ public class CombatResponse {
         this.defender = defender;
     }
 
-    public AttackOutcomeType getOutcome() {
-        return outcome;
+    public int getRoll() {
+        return roll;
     }
 
-    public void setOutcome(AttackOutcomeType outcome) {
-        this.outcome = outcome;
+    public void setRoll(int roll) {
+        this.roll = roll;
     }
 
 }

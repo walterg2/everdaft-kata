@@ -2,18 +2,19 @@ package everdaft.services;
 
 import everdaft.beans.AbilityType;
 import everdaft.beans.AttackOutcomeType;
-import everdaft.beans.Monster;
-import everdaft.beans.NonPlayerCharacter;
-import everdaft.beans.PlayerCharacter;
 import everdaft.exceptions.AbilityScoreOutOfRangeException;
 import everdaft.exceptions.CombatServiceException;
+import everdaft.services.requests.AttackRequest;
+import everdaft.services.requests.HealRequest;
+import everdaft.services.responses.AttackResponse;
+import everdaft.services.responses.HealResponse;
 
 public class CombatServiceImpl implements CombatService {
 
     @Override
-    public CombatResponse attack(CombatRequest request) throws CombatServiceException {
-        CombatResponse response = new CombatResponse();
-
+    public AttackResponse attack(AttackRequest request) throws CombatServiceException {
+    	
+        AttackResponse response = new AttackResponse();
         response.setAttacker(request.getAttacker());
         response.setDefender(request.getDefender());
 
@@ -25,43 +26,13 @@ public class CombatServiceImpl implements CombatService {
         try {
 
             // calculate attack modifier
-            int attackModifier = 0;
-            if (request.getAttacker() instanceof PlayerCharacter) {
-                PlayerCharacter character = (PlayerCharacter) request.getAttacker();
-                attackModifier = calculateAbilityModifier(AbilityType.STR, character.getStrength());
-            } else if (request.getAttacker() instanceof NonPlayerCharacter) {
-                NonPlayerCharacter character = (NonPlayerCharacter) request.getAttacker();
-                attackModifier = calculateAbilityModifier(AbilityType.STR, character.getStrength());
-            } else {
-                Monster monster = (Monster) request.getAttacker();
-                attackModifier = monster.getDamageModifier();
-            }
+            int attackModifier = calculateAbilityModifier(AbilityType.STR, request.getAttacker().getStrength());
 
             // calculate armor class modifier
-            int armorClassModifier = 0;
-            if (request.getDefender() instanceof PlayerCharacter) {
-                PlayerCharacter character = (PlayerCharacter) request.getDefender();
-                armorClass = calculateAbilityModifier(AbilityType.DEX, character.getDexterity());
-            } else if (request.getDefender() instanceof NonPlayerCharacter) {
-                NonPlayerCharacter character = (NonPlayerCharacter) request.getDefender();
-                armorClass = calculateAbilityModifier(AbilityType.DEX, character.getDexterity());
-            } else {
-                Monster monster = (Monster) request.getAttacker();
-                armorClass = monster.getArmorClass();
-            }
+            int armorClassModifier = calculateAbilityModifier(AbilityType.DEX, request.getDefender().getDexterity());
 
             // calculate damage modifier
-            int damageModifier = 0;
-            if (request.getDefender() instanceof PlayerCharacter) {
-                PlayerCharacter character = (PlayerCharacter) request.getDefender();
-                damageModifier = calculateAbilityModifier(AbilityType.STR, character.getStrength());
-            } else if (request.getDefender() instanceof NonPlayerCharacter) {
-                NonPlayerCharacter character = (NonPlayerCharacter) request.getDefender();
-                damageModifier = calculateAbilityModifier(AbilityType.DEX, character.getStrength());
-            } else {
-                Monster monster = (Monster) request.getAttacker();
-                damageModifier = monster.getDamageModifier();
-            }
+            int damageModifier = calculateAbilityModifier(AbilityType.STR, request.getDefender().getStrength());
 
             // calculate standard damage
             standardDamage = 1 + damageModifier;
@@ -89,17 +60,53 @@ public class CombatServiceImpl implements CombatService {
         if (roll >= armorClass) {
             if (request.getRoll() == 20) {
                 response.setOutcome(AttackOutcomeType.CRITICAL);
-                request.getDefender().damage(criticalDamage);
+                if (request.getDefender().getHitPoints() > criticalDamage) {
+                	request.getDefender().setAlive(true);
+                	request.getDefender().setDead(false);
+                } else if (request.getDefender().getHitPoints() <= criticalDamage) {
+                	request.getDefender().setAlive(false);
+                	request.getDefender().setDead(true);                	
+                }
+                request.getDefender().setHitPoints(request.getDefender().getHitPoints() - criticalDamage);
             } else {
                 response.setOutcome(AttackOutcomeType.HIT);
-                request.getDefender().damage(standardDamage);
+                if (request.getDefender().getHitPoints() > criticalDamage) {
+                	request.getDefender().setAlive(false);
+                	request.getDefender().setDead(true);
+                } else if (request.getDefender().getHitPoints() <= criticalDamage) {
+                	request.getDefender().setAlive(true);
+                	request.getDefender().setDead(false);                	
+                }
+                request.getDefender().setHitPoints(request.getDefender().getHitPoints() - standardDamage);
             }
         } else {
             response.setOutcome(AttackOutcomeType.MISS);
         }
-
+        
         return response;
     }
+
+	@Override
+	public HealResponse heal(HealRequest request) throws CombatServiceException {
+		
+        HealResponse response = new HealResponse();
+        response.setHealer(request.getHealer());
+        response.setRecipient(request.getRecipient());
+        
+        int originalHitPoints = request.getRecipient().getHitPoints();
+        int newHitPoints = request.getPointsToHeal() + request.getRecipient().getHitPoints();
+        if (newHitPoints > 5) {
+            request.getRecipient().setHitPoints(5);
+            response.setNewHitPoints(5);
+            response.setActualPointsHealed(5 - originalHitPoints);
+        } else {
+            request.getRecipient().setHitPoints(newHitPoints);        	
+            response.setNewHitPoints(newHitPoints);
+            response.setActualPointsHealed(newHitPoints - originalHitPoints);
+        }
+        
+		return response;
+	}
 
     private int calculateAbilityModifier(AbilityType abilityType, int abilityScore) throws AbilityScoreOutOfRangeException {
         int mod;
@@ -151,4 +158,5 @@ public class CombatServiceImpl implements CombatService {
         }
         return mod;
     }
+
 }
