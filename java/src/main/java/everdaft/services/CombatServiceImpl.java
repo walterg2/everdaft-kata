@@ -26,7 +26,7 @@ public class CombatServiceImpl implements CombatService {
         // calculate attack modifier
         int attackModifier = 0;
         try {
-            attackModifier = calculateAbilityModifier(AbilityType.STR, request.getAttacker().getStrength());
+            attackModifier = calculateAbilityModifier(AbilityType.STR, request.getAttacker().getStrength()) + request.getAttacker().getLevel() / 2;
         } catch (AbilityScoreOutOfRangeException ex) {
             throw new CombatServiceException(ex);
         }
