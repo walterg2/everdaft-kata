@@ -1,10 +1,10 @@
 package everdaft.exceptions;
 
-import everdaft.abilities.Ability;
+import everdaft.beans.AbilityType;
 
 public class AbilityNotFoundException extends AbilityException {
 
-	public AbilityNotFoundException(Ability ability) {
+	public AbilityNotFoundException(AbilityType ability) {
 		super(ability);
 	}
 

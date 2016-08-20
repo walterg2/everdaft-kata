@@ -1,20 +1,20 @@
 package everdaft.exceptions;
 
-import everdaft.abilities.Ability;
+import everdaft.beans.AbilityType;
 
 public class AbilityException extends EverdaftException {
 
-	private Ability ability;
+	private AbilityType ability;
 	
-	public AbilityException(Ability ability) {
+	public AbilityException(AbilityType ability) {
 		setAbility(ability);
 	}
 
-	public Ability getAbility() {
+	public AbilityType getAbility() {
 		return ability;
 	}
 
-	public void setAbility(Ability ability) {
+	public void setAbility(AbilityType ability) {
 		this.ability = ability;
 	}
 

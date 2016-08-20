@@ -1,11 +1,12 @@
-package everdaft.alignments;
+package everdaft.beans;
 
-public enum Alignment {
-	GOOD("Good"), NEUTRAL("Neutral"), EVIL("Evil");
-	
+public enum AttackOutcomeType {
+
+	HIT("Hit"), MISS("Miss"), CRITICAL("Critical Hit");
+
 	private final String desc;
 
-	Alignment(final String desc) {
+	AttackOutcomeType(final String desc) {
 		this.desc = desc;
 	}
 

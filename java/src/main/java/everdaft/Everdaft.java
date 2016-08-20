@@ -1,29 +1,36 @@
 package everdaft;
 
-import everdaft.combat.Attack;
-import everdaft.combat.BasicAttack;
-import everdaft.entities.Combatant;
-import everdaft.entities.NonPlayerCharacter;
-import everdaft.entities.PlayerCharacter;
+import everdaft.beans.Combatant;
+import everdaft.exceptions.CombatServiceException;
+import everdaft.factories.CombatServiceFactory;
+import everdaft.factories.CombatantFactory;
+import everdaft.services.CombatService;
+import everdaft.services.requests.AttackRequest;
+import everdaft.services.responses.AttackResponse;
 
 public class Everdaft {
 
-	/**
-	 * The main method.
-	 * 
-	 * @param args not used
-	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CombatServiceException {
 		Everdaft app = new Everdaft();
 		app.execute();
 	}
-	
-	public void execute() {
-		Combatant attacker = new PlayerCharacter();
-		Combatant defender = new NonPlayerCharacter();
-		Attack attack = new BasicAttack(attacker, defender);
-		attack.execute(10);
-		System.out.format("Attack was a %s", attack.getStatus());
-	}
 
+	public void execute() throws CombatServiceException {
+
+		Combatant attacker = null;
+		Combatant defender = null;
+
+		attacker = CombatantFactory.createCombatant();
+		defender = CombatantFactory.createCombatant();
+
+		AttackRequest request = new AttackRequest();
+		request.setAttacker(attacker);
+		request.setDefender(defender);
+		request.setRoll(15);
+
+		CombatService combatService = CombatServiceFactory.createCombatService();
+		AttackResponse response = combatService.attack(request);
+
+		System.out.format("Attack was a %s", response.getOutcome());
+	}
 }

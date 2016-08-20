@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import everdaft.exceptions.CombatServiceException;
+
 public class EverdaftTest {
 
 	@Before
@@ -17,7 +19,7 @@ public class EverdaftTest {
 	}
 
 	@Test
-	public void test() {
+	public void test() throws CombatServiceException {
 		Everdaft everdaft = new Everdaft();
 		assertTrue(everdaft != null);
 		everdaft.execute();

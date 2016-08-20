@@ -1,11 +1,11 @@
-package everdaft.abilities;
+package everdaft.beans;
 
-public enum Ability {
+public enum AbilityType {
 	STR("Strength"), DEX("Dexterity"), CON("Constitution"), INT("Intelligence"), WIS("Wisdom"), CHA("Charisma");
 	
 	private final String desc;
 
-	Ability(final String desc) {
+	AbilityType(final String desc) {
 		this.desc = desc;
 	}
 
@@ -17,6 +17,5 @@ public enum Ability {
 	public String getDescription() {
 		return desc;
 	}
-
 
 }
